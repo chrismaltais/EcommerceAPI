@@ -1,9 +1,6 @@
 const {ObjectId} = require('mongodb'); // MongoDB
 const {Product} = require('./../../models/products');
 
-// const testMemberOne = new ObjectId();
-// const testMemberTwo = new ObjectId();
-
 let testProducts = [{
     title: 'iPhone 11',
     price: 1000,
@@ -14,12 +11,18 @@ let testProducts = [{
     price: 600,
     sku: 2,
     inventory_count: 2
+}, {
+    title: 'iLaptop',
+    price: 600,
+    sku: 3,
+    inventory_count: 0
 }];
 
 const populateProducts = async () => {
     await Product.deleteMany({});
     await new Product(testProducts[0]).save();
     await new Product(testProducts[1]).save();
+    await new Product(testProducts[2]).save();
 } 
 
 module.exports = {
