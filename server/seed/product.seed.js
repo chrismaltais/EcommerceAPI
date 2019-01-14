@@ -5,11 +5,13 @@ let products = [
     new Product({
         title: 'iPhone 11',
         price: 1000,
+        sku: 1,
         inventory_count: 3
     }), 
     new Product({
         title: 'iPad 6',
         price: 600,
+        sku: 2,
         inventory_count: 2
     })
 ];
