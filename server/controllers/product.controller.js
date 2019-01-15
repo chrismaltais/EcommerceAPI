@@ -6,7 +6,7 @@ async function getAllProducts() {
         let products = await Product.find({})
         return products;
     } catch (e) {
-        return {message: "Products not found."};
+        return {error: e};
     }
 };
 
@@ -15,11 +15,21 @@ async function getStockedProducts() {
         let products = await Product.find({ inventory_count: { $gt: 0} })
         return products;
     } catch (e) {
-        return {message: "Products not found."};
+        return {error: e};
+    }
+};
+
+async function getProductBySKU(sku) {
+    try {
+        let product = await Product.find({ sku: sku })
+        return product;
+    } catch (e) {
+        return {error: e};
     }
 };
 
 module.exports = {
     getAllProducts,
-    getStockedProducts
+    getStockedProducts,
+    getProductBySKU
 }

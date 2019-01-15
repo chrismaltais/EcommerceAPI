@@ -1,9 +1,8 @@
 const request = require('supertest');
-// const {ObjectId} = require('mongodb');
 
 const {app} = require('./../server');
 const {Product} = require('./../models/products');
-const {testMembers} = require('./seed/seed');
+const {testProducts} = require('./seed/seed');
 
 describe('GET /products', () => {
     it('should get all products', async () => {
@@ -25,3 +24,23 @@ describe('GET /products', () => {
         expect(response.body.length).toBe(3);
     });
 });
+
+describe('GET /products/:sku', () => {
+    it('should return product document', async () => {
+        let testSKU = testProducts[0].sku;
+        let response = await request(app).get(`/products/${testSKU}`).expect(200)
+        expect(response.body.length).toBe(1);
+
+        expect(response.body[0].sku).toBe(testSKU);
+    })
+
+    it('should return 404 if product not found', async () => {
+        let fakeSKU = 5
+        let response = await request(app).get(`/products/${fakeSKU}`).expect(404)
+    })
+
+    it('should return 400 if SKU is NaN', async () => {
+        let fakeSKU = 'isThisASKU'
+        let response = await request(app).get(`/products/${fakeSKU}`).expect(400)
+    })
+})
