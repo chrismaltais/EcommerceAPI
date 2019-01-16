@@ -54,3 +54,42 @@ describe('GET /api/v2/cart', () => {
         let response = await request(app).get('/api/v2/cart').expect(401)
     });
 })
+
+describe('GET /api/v2/products', () => {
+    it('should get all products', async () => {
+        let response = await request(app).get('/api/v2/products').expect(200);
+        expect(response.body.length).toBe(3);
+    });
+
+    it('should get only stocked products if ?stocked=true', async () => {
+        let response = await request(app).get('/api/v2/products?stocked=true').expect(200);
+        expect(response.body.length).toBe(2);
+
+        for (i = 0; i < response.body.length; i++) {
+            expect(response.body[i].inventory_count).not.toBe(0); 
+        }
+    });
+
+    it('should get only unstocked products if ?stocked=false', async () => {
+        let response = await request(app).get('/api/v2/products?stocked=false').expect(200);
+        expect(response.body.length).toBe(1);
+    });
+});
+
+describe('GET /api/v2/products/:sku', () => {
+    it('should return product document', async () => {
+        let testSKU = testProducts[0].sku;
+        let response = await request(app).get(`/api/v2/products/${testSKU}`).expect(200);
+        expect(response.body).toMatchObject(testProducts[0]);
+    });
+
+    it('should return 404 if product not found', async () => {
+        let fakeSKU = 5;
+        let response = await request(app).get(`/api/v2/products/${fakeSKU}`).expect(404);
+    });
+
+    it('should return 400 if SKU is NaN', async () => {
+        let fakeSKU = 'isThisASKU';
+        let response = await request(app).get(`/api/v2/products/${fakeSKU}`).expect(400);
+    });
+});

@@ -19,6 +19,15 @@ async function getStockedProducts() {
     }
 };
 
+async function getOutOfStockProducts() {
+    try {
+        let products = await Product.find({ inventory_count: { $eq: 0} })
+        return products;
+    } catch (e) {
+        return {error: e};
+    }
+};
+
 async function getProductBySKU(sku) {
     try {
         let product = await Product.findOne({ sku: sku })
@@ -47,6 +56,7 @@ async function purchaseProductBySKU(sku) {
 module.exports = {
     getAllProducts,
     getStockedProducts,
+    getOutOfStockProducts,
     getProductBySKU,
     purchaseProductBySKU
 }

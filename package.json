@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "seed": "node server/seed/product.seed.js",
+    "local-test": "export ENV=test || SET \"NODE_ENV=test\" && jest --detectOpenHandles --watch",
     "start": "node server/server.js",
     "test": "export ENV=test || SET \"NODE_ENV=test\" && jest --detectOpenHandles"
   },
