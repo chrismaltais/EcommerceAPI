@@ -1,5 +1,6 @@
-let {Product} = require('../models/products');
-let {User} = require('../models/users');
+let {Product} = require('./../models/products');
+let {User} = require('./../models/users');
+let {Cart} = require('./../models/carts')
 let {mongoose} = require('../db/mongoose')
 
 let products = [{
@@ -28,10 +29,12 @@ async function populateData() {
     try {
         await Product.deleteMany({});
         await User.deleteMany({});
+        await Cart.deleteMany({});
         await new Product(products[0]).save();
         await new Product(products[1]).save();
         await new Product(products[2]).save();
         await new User(user).save();
+        await new Cart().save();
         console.log('Data seeded successfully.');
     } catch (e) {
         console.log('Could not seed product info to database.');

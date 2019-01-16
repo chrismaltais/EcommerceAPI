@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const {ObjectId} = require('mongodb');
 
 const {Product} = require("./../../models/products");
-const {testProducts, populateProducts} = require('./../seed/seed');
+const {User} = require("./../../models/users");
+const {Cart} = require("./../../models/carts");
+const {testProducts, populateDB} = require('./../seed/seed');
 
 const mongoURI = global.__MONGO_URI__;
 
@@ -18,10 +20,12 @@ beforeAll(async () => {
 });
 
 // Clear DB to allow for proper testing
-beforeEach(populateProducts);
+beforeEach(populateDB);
 
 afterEach( async () => {
     await Product.deleteMany({}); // removing all items from model!
+    await User.deleteMany({});
+    await Cart.deleteMany({});
     jest.clearAllMocks();
 });
 

@@ -1,10 +1,10 @@
 const request = require('supertest');
 
-const {app} = require('./../server');
-const {Product} = require('./../models/products');
+const {app} = require('../server');
+const {Product} = require('../models/products');
 const {testProducts} = require('./seed/seed');
 
-describe('GET /products', () => {
+describe('GET /api/v1/products', () => {
     it('should get all products', async () => {
         let response = await request(app).get('/api/v1/products').expect(200);
         expect(response.body.length).toBe(3);
@@ -25,7 +25,7 @@ describe('GET /products', () => {
     });
 });
 
-describe('GET /products/:sku', () => {
+describe('GET /api/v1/products/:sku', () => {
     it('should return product document', async () => {
         let testSKU = testProducts[0].sku;
         let response = await request(app).get(`/api/v1/products/${testSKU}`).expect(200);
@@ -43,7 +43,7 @@ describe('GET /products/:sku', () => {
     });
 });
 
-describe('PATCH /products/:sku', () => {
+describe('PATCH /api/v1/products/:sku', () => {
     it('should decrement a product inventory count by 1', async () => {
         let testSKU = testProducts[0].sku;
         let response = await request(app).patch(`/api/v1/products/${testSKU}`).expect(200);
