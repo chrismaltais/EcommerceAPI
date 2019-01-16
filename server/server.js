@@ -15,7 +15,7 @@ let app = express();
 app.use(bodyParser.json());
 
 // Hook up API routes to controllers
-app.use('/', api(controllers));
+app.use('/api/', api(controllers));
 
 if (!IS_TEST) {
     app.listen(port, () => {
