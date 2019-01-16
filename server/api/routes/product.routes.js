@@ -8,7 +8,7 @@ module.exports = (controller) => {
         try {
             let products;
             if (req.query.stocked === 'true') {
-                products = await product.getStockedProducts()
+                products = await product.getStockedProducts();
             } else {
                 products = await product.getAllProducts();
             }
