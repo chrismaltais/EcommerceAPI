@@ -1,4 +1,5 @@
 let {Product} = require('../models/products');
+let {User} = require('../models/users');
 let {mongoose} = require('../db/mongoose')
 
 let products = [{
@@ -18,13 +19,20 @@ let products = [{
     inventory_count: 0
 }];
 
+let user = {
+    email: 'chris.maltais@shopify.ca',
+    password: 'IdLikeToWorkHere'
+}
+
 async function populateData() {
     try {
         await Product.deleteMany({});
-        await new Product(products[0]).save()
-        await new Product(products[1]).save()
-        await new Product(products[2]).save()
-        console.log('Data seeded successfully.')
+        await User.deleteMany({});
+        await new Product(products[0]).save();
+        await new Product(products[1]).save();
+        await new Product(products[2]).save();
+        await new User(user).save();
+        console.log('Data seeded successfully.');
     } catch (e) {
         console.log('Could not seed product info to database.');
     }

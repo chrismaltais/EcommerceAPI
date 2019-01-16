@@ -12,6 +12,7 @@ module.exports = (controller) => {
             } else {
                 products = await product.getAllProducts();
             }
+            console.log(req)
             res.status(200).send(products);
         } catch (e) {
             res.status(400).send(e);
