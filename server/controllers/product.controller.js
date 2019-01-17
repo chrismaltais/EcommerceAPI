@@ -4,6 +4,7 @@ const {Product} = require('./../models/products');
 async function getAllProducts() {
     try {
         let products = await Product.find({})
+        console.log('From getAllProducts inside controller: ', products);
         return products;
     } catch (e) {
         return {error: e};

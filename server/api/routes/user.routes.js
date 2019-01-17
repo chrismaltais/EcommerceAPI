@@ -24,7 +24,7 @@ module.exports = (controller) => {
 
     shopAPI.get('/products', async (req, res) => {
         try {
-            let products;
+            let products = 'initial'
             if (req.query.stocked === 'true') {
                 products = await product.getStockedProducts();
             } else if (req.query.stocked === 'false') {

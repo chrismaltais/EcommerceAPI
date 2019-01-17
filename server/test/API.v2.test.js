@@ -51,7 +51,7 @@ describe('DELETE /api/v2/logout', () => {
 
 describe('POST /api/v2/cart', () => {
     it('should create a new cart if one does not already exist', async () => {
-
+        
     });
 
     it('should return 400 if a cart already exists', async () => {
