@@ -38,7 +38,7 @@ var UserSchema = new mongoose.Schema({
 });
 
 // Modify returned User JSON object to hide password
-UserSchema.methods.toJSON = async function () {
+UserSchema.methods.toJSON = function () {
     var user = this;
     var userObject = user.toObject(); // converts to mongoose document to POJO
   

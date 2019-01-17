@@ -4,7 +4,6 @@ const {Product} = require('./../models/products');
 async function getAllProducts() {
     try {
         let products = await Product.find({})
-        console.log('From getAllProducts inside controller: ', products);
         return products;
     } catch (e) {
         return {error: e};
@@ -50,8 +49,15 @@ async function checkIfStocked(sku) {
         return true;
     } catch (e) {
         return {error: e};
-    }  
-         
+    }        
+}
+
+async function checkIfIsProduct(sku) {
+    let isProduct = await Product.findOne({"sku": sku });
+    if(!isProduct) {
+        return false;
+    }
+    return true;
 }
 
 async function purchaseProductBySKU(sku) {
@@ -76,5 +82,6 @@ module.exports = {
     getOutOfStockProducts,
     getProductBySKU,
     purchaseProductBySKU,
-    checkIfStocked
+    checkIfStocked,
+    checkIfIsProduct
 }

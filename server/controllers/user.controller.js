@@ -47,15 +47,22 @@ async function editCart(user, cartId, sku, quantity) {
     if (!productExists) {
         await addToCart(user, sku);
     }
-    await Cart.findOneAndUpdate({_id: cartId, "products.sku": sku}, {"products.$.quantity": quantity});
+    
+    if (quantity == 0) {
+        await Cart.findOneAndUpdate({_id: cartId, "products.sku": sku}, { $pull: {products: { sku : sku } } }, {new: true});
+    } else {
+        await Cart.findOneAndUpdate({_id: cartId, "products.sku": sku}, {"products.$.quantity": quantity});
+    }
+
     let total = await calculateCartTotal(cartId);
-    let cartBloated = await Cart.findOneAndUpdate({_id: cartId, "products.sku": sku}, {total: total}, {new: true} );
+    let cartBloated = await Cart.findByIdAndUpdate(cartId, {total: total}, {new: true} );
     let cart = _.pick(cartBloated, ['total', 'products']);
     return cart;
 }
 
 async function calculateCartTotal(cartId) {
     let products = await getCartProducts(cartId);
+    console.log('Cart products: ', products);
     total = 0;
     for (let i = 0; i < products.length; i++) {
         total = total + products[i].quantity * products[i].price;
@@ -92,12 +99,53 @@ async function addToCart(user, sku) {
     return productAdded;
 }
 
+async function checkValidInventory(cartId) {
+    productsFromCart = await getCartProducts(cartId);
+    let invalidProducts = [];
+    for (let i = 0; i < productsFromCart.length; i++) {
+        let product = await Product.findOne({ sku : productsFromCart[i].sku});
+        if (productsFromCart[i].quantity > product.inventory_count) {
+            let item = {
+                title: product.title,
+                sku: product.sku,
+                quantityInCart: productsFromCart[i].quantity,
+                inventoryAvailable: product.inventory_count
+            }
+            invalidProducts.push(item);
+        }
+    }
+    return invalidProducts;
+}
+
+async function purchaseCart(cartId) {
+    productsFromCart = await getCartProducts(cartId);
+    for (let i = 0; i < productsFromCart.length; i++) {
+        let product = await Product.findOneAndUpdate({ 
+            sku : productsFromCart[i].sku
+        }, { 
+            $inc: {
+                inventory_count: -productsFromCart[i].quantity
+            }
+        });
+    }
+    let cart = await Cart.findById(cartId);
+    return cart.total;
+}
+
+async function removeCart(user) {
+    await User.findByIdAndUpdate(user._id, { $set: {cart: null}}, {new: true});
+}
+
 module.exports = {
     login,
     checkCartExists,
     getCartID,
     createCart,
+    getCartProducts,
+    checkValidInventory,
     getCart,
     addToCart,
-    editCart
+    editCart,
+    purchaseCart,
+    removeCart
 }

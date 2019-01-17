@@ -101,8 +101,26 @@ module.exports = (controller) => {
 
     shopAPI.post('/cart/checkout', authenticate, async (req, res) => {
         // If no cart -> 400 (must create a cart to checkout!)
+        if (!req.user.cart) {
+            return res.status(400).send({error: `Did not purchase cart. You must create a cart before purchasing.`});
+        }
+        let products = await user.getCartProducts(req.user.cart);
         // If nothing in cart -> 400 (must have items in cart to purchase!)
-        // 
+        if (products.length === 0) {
+            return res.status(400).send({error: 'Did not purchase cart. You must have products in your cart before purchasing.'});
+        }
+        // Check if items are in stock
+        let invalidProducts = await user.checkValidInventory(req.user.cart);
+
+        if(invalidProducts.length != 0) {
+            return res.status(400).send({error: 'Did not purchase cart. There are too many of the following products in your cart.',
+                                        invalidProducts: invalidProducts});
+        }
+
+        let total = await user.purchaseCart(req.user.cart);
+        let test = await user.removeCart(req.user);
+
+        res.status(200).send({message: `Cart purchased successfully! Total: $${total} CAD`});
     });
 
     shopAPI.put('/cart/:sku/:quantity', authenticate, async (req, res) => {
@@ -115,11 +133,8 @@ module.exports = (controller) => {
             res.status(400).send({error: `Unable to change SKU: ${sku} to ${quantity} units in your cart. Quantity must be a positive number.`})
         }
 
-        let inventory = await product.checkIfStocked(sku);
-        if (inventory === 0) {
-            return res.status(404).send({message: `Unable to add SKU: ${sku} to cart. No inventory available.`})
-        }
-        if (!inventory) {
+        let isProduct = await product.checkIfIsProduct(sku);
+        if (!isProduct) {
             return res.status(404).send({message: `Unable to add SKU: ${sku} to cart. Product does not exist.`})
         }
 
@@ -135,10 +150,6 @@ module.exports = (controller) => {
             return res.status(400).send({error: e})
         }    
     })
-
-    
-    // shopAPI.post('/cart')
-    // shoAPI
 
     return shopAPI;
 }

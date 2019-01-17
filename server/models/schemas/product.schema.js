@@ -18,7 +18,6 @@ const ProductSchema = new mongoose.Schema({
         trim: true,
         required: true,
         unique: true,
-
     },
     inventory_count: {
         type: Number,
