@@ -2,8 +2,11 @@ let mongoose = require('mongoose');
 
 const CartSchema = new mongoose.Schema({
     products: [{
+        title: {
+            title: String
+        },
         sku: {
-            type: Number
+            type: Number,
         },
         quantity: {
             type: Number

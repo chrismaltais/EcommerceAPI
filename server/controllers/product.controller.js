@@ -37,6 +37,22 @@ async function getProductBySKU(sku) {
     }
 };
 
+async function checkIfStocked(sku) {
+    try {
+        let productExist = await Product.findOne({"sku": sku });
+        if (!productExist) {
+            return false;
+        }
+        if (productExist.inventory_count <= 0) {
+            return 0;
+        }
+        return true;
+    } catch (e) {
+        return {error: e};
+    }  
+         
+}
+
 async function purchaseProductBySKU(sku) {
     try {
         let productExist = await Product.findOne({"sku": sku });
@@ -58,5 +74,6 @@ module.exports = {
     getStockedProducts,
     getOutOfStockProducts,
     getProductBySKU,
-    purchaseProductBySKU
+    purchaseProductBySKU,
+    checkIfStocked
 }

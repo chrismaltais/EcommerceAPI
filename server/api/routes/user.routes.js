@@ -45,6 +45,26 @@ module.exports = (controller) => {
         }
     })
 
+    shopAPI.patch('/products/:sku', authenticate, async (req, res) => {
+        let sku = req.params.sku;
+        if (isNaN(sku)) {
+            return res.status(400).send({error: `Unable to add SKU: ${sku} to cart. Invalid SKU, must be a number).`})
+        }
+        try {
+            let inventory = await product.checkIfStocked(sku);
+            if (inventory === 0) {
+                return res.status(404).send({message: `Unable to add SKU: ${sku} to cart. No inventory available.`})
+            }
+            if (!inventory) {
+                return res.status(404).send({message: `Unable to add SKU: ${sku} to cart. Product does not exist.`})
+            }
+            await user.addToCart(req.user, sku);
+            res.status(200).send(`Added SKU: ${sku} to cart! View your cart at /api/v2/cart`);
+        } catch (e) {
+            res.status(400).send(e);
+        }
+    })
+
     shopAPI.get('/cart', authenticate, async(req, res) => {
         let cartExists = await user.checkCartExists(req.user); //
         if (!cartExists) {
@@ -52,17 +72,17 @@ module.exports = (controller) => {
         }
         try {
             let cartID = await user.getCartID(req.user);
-            let cart = await user.getCartContents(cartID); //
+            let cart = await user.getCart(cartID); //
             return res.status(200).send(cart);
         } catch (e) {
             return res.status(400).send({error: e})
         }
     })
-    
-    // shopAPI.patch('/products/:sku', authenticate, async(req, res) => {
-    //     // Can't add a product to cart if sku is 0
 
-    // })
+    // shopAPI.post('/logout)
+    // shopAPI.patch('/cart/:sku')
+    // shopAPI.post('/cart')
+    // shoAPI
 
     return shopAPI;
 }
