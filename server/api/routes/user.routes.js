@@ -54,7 +54,7 @@ module.exports = (controller) => {
         }
     })
 
-    shopAPI.patch('/products/:sku', authenticate, async (req, res) => {
+    shopAPI.put('/products/:sku', authenticate, async (req, res) => {
         let sku = req.params.sku;
         if (isNaN(sku)) {
             return res.status(400).send({error: `Unable to add SKU: ${sku} to cart. Invalid SKU, must be a number).`})
@@ -105,7 +105,7 @@ module.exports = (controller) => {
         // 
     });
 
-    shopAPI.patch('/cart/:sku/:quantity', authenticate, async (req, res) => {
+    shopAPI.put('/cart/:sku/:quantity', authenticate, async (req, res) => {
         let sku = req.params.sku;
         let quantity = req.params.quantity;
         if (isNaN(sku) || sku < 0) {
