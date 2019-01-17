@@ -38,6 +38,27 @@ describe('POST /api/v2/login', () => {
     });
 });
 
+describe('DELETE /api/v2/logout', () => {
+    it('should remove auth token on logout', async () => {
+        let response = await request(app).delete('/api/v2/logout')
+        .set('x-auth', testUsers[0].tokens[0].token) // Set the header!
+        .expect(200)
+
+        let userFromDB = await User.findById(testUsers[0]._id);
+        expect(userFromDB.tokens.length).toBe(0);
+    })
+})
+
+describe('POST /api/v2/cart', () => {
+    it('should create a new cart if one does not already exist', async () => {
+
+    });
+
+    it('should return 400 if a cart already exists', async () => {
+
+    });
+})
+
 describe('GET /api/v2/cart', () => {
     it('should return an empty cart with no products if cart not previously created', async () => {
         let response = await request(app).get('/api/v2/cart')
