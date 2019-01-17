@@ -41,8 +41,30 @@ async function getCart(cartId) {
     return cart;
 }
 
+async function editCart(user, cartId, sku, quantity) {
+    // Find product with SKU and edit quantity to be: 
+    let productExists = await checkProductExistsInCart(cartId, sku);
+    if (!productExists) {
+        await addToCart(user, sku);
+    }
+    await Cart.findOneAndUpdate({_id: cartId, "products.sku": sku}, {"products.$.quantity": quantity});
+    let total = await calculateCartTotal(cartId);
+    let cartBloated = await Cart.findOneAndUpdate({_id: cartId, "products.sku": sku}, {total: total}, {new: true} );
+    let cart = _.pick(cartBloated, ['total', 'products']);
+    return cart;
+}
+
+async function calculateCartTotal(cartId) {
+    let products = await getCartProducts(cartId);
+    total = 0;
+    for (let i = 0; i < products.length; i++) {
+        total = total + products[i].quantity * products[i].price;
+    }
+    return total;
+}
+
 async function checkProductExistsInCart(cartId, sku) { 
-    let exists = await Cart.findOne({_id: cartId, sku: sku});
+    let exists = await Cart.findOne({_id: cartId, "products.sku": sku});
     if (!exists) {
         return false;
     }
@@ -57,7 +79,7 @@ async function addToCart(user, sku) {
     let cartID = await getCartID(user);
 
     let product = await Product.findOne({sku: sku});
-    let coreProductInfo = _.pick(product, ['title', 'sku']);
+    let coreProductInfo = _.pick(product, ['title', 'price', 'sku']);
 
     let isInCart = await checkProductExistsInCart(cartID, sku);
     if(!isInCart) {
@@ -76,5 +98,6 @@ module.exports = {
     getCartID,
     createCart,
     getCart,
-    addToCart
+    addToCart,
+    editCart
 }

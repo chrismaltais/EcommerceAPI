@@ -13,6 +13,15 @@ module.exports = (controller) => {
         res.header('x-auth', token).status(200).send({token: token});
     })
 
+    shopAPI.delete('/logout', authenticate, async (req, res) => {
+        try {
+            await req.user.deleteToken(req.token);
+            res.status(200).send({message: 'Successfully logged out.'});
+        } catch (e) {
+            res.status(400).send(e);
+        }
+    })
+
     shopAPI.get('/products', async (req, res) => {
         try {
             let products;
@@ -63,24 +72,71 @@ module.exports = (controller) => {
         } catch (e) {
             res.status(400).send(e);
         }
-    })
+    });
+
+    shopAPI.post('/cart', authenticate, async (req, res) => {
+        let cartExists = await user.checkCartExists(req.user); 
+        if (!cartExists) {
+            req.user = await user.createCart(req.user); 
+            let cartID = await user.getCartID(req.user);
+            let cart = await user.getCart(cartID); 
+            return res.status(200).send(cart);
+        }
+        return res.status(400).send({error: `Cart already exists with ID: ${req.user.cart}.`})
+    });
 
     shopAPI.get('/cart', authenticate, async(req, res) => {
-        let cartExists = await user.checkCartExists(req.user); //
+        let cartExists = await user.checkCartExists(req.user); 
         if (!cartExists) {
-            req.user = await user.createCart(req.user); //
+            req.user = await user.createCart(req.user); 
         }
         try {
             let cartID = await user.getCartID(req.user);
-            let cart = await user.getCart(cartID); //
+            let cart = await user.getCart(cartID); 
             return res.status(200).send(cart);
         } catch (e) {
             return res.status(400).send({error: e})
         }
+    });
+
+    shopAPI.post('/cart/checkout', authenticate, async (req, res) => {
+        // If no cart -> 400 (must create a cart to checkout!)
+        // If nothing in cart -> 400 (must have items in cart to purchase!)
+        // 
+    });
+
+    shopAPI.patch('/cart/:sku/:quantity', authenticate, async (req, res) => {
+        let sku = req.params.sku;
+        let quantity = req.params.quantity;
+        if (isNaN(sku) || sku < 0) {
+            res.status(400).send({error: `Unable to change SKU: ${sku} to ${quantity} units in your cart. SKU must be a positive number.`})
+        }
+        if (isNaN(quantity) || quantity < 0) {
+            res.status(400).send({error: `Unable to change SKU: ${sku} to ${quantity} units in your cart. Quantity must be a positive number.`})
+        }
+
+        let inventory = await product.checkIfStocked(sku);
+        if (inventory === 0) {
+            return res.status(404).send({message: `Unable to add SKU: ${sku} to cart. No inventory available.`})
+        }
+        if (!inventory) {
+            return res.status(404).send({message: `Unable to add SKU: ${sku} to cart. Product does not exist.`})
+        }
+
+        let cartExists = await user.checkCartExists(req.user); 
+        if (!cartExists) {
+            req.user = await user.createCart(req.user); 
+        }
+        try {
+            let cartID = await user.getCartID(req.user);
+            let cart = await user.editCart(req.user, cartID, sku, quantity); 
+            return res.status(200).send(cart);
+        } catch (e) {
+            return res.status(400).send({error: e})
+        }    
     })
 
-    // shopAPI.post('/logout)
-    // shopAPI.patch('/cart/:sku')
+    
     // shopAPI.post('/cart')
     // shoAPI
 
