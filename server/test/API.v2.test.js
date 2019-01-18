@@ -145,7 +145,9 @@ describe('PUT /api/v2/products/:sku', () => {
 
 describe('PUT /api/v2/cart/:sku/:quantity', () => {
     it('should return 400 if SKU is NaN', async () => {
-
+        let response = await request(app).put(`/api/v2/cart/iphone/3`)
+        .set('x-auth', testUsers[2].tokens[0].token)
+        .expect(400);
     });
 
     it('should return 400 if quantity is NaN', async () => {
