@@ -92,10 +92,10 @@ describe('PUT /api/v2/products/:sku', () => {
     it('should add product to cart if cart exists', async () => {
         let sku = testProducts[0].sku
         let response = await request(app).put(`/api/v2/products/${sku}`)
-        .set('x-auth', testUsers[2].tokens[0].token)
+        .set('x-auth', testUsers[3].tokens[0].token)
         .expect(200);
 
-        let userFromDB = await User.findById(testUsers[2]._id);
+        let userFromDB = await User.findById(testUsers[3]._id);
         let cartFromDB = await Cart.findById(userFromDB.cart);
 
         expect(cartFromDB.products[0].sku).toBe(sku);
@@ -148,7 +148,48 @@ describe('PUT /api/v2/cart/:sku/:quantity', () => {
 });
 
 describe('POST /api/v2/cart/checkout', () => {
+    it('should reduce product inventory count by quantity of product in cart', async() => {
+        let response = await request(app).post(`/api/v2/cart/checkout`)
+        .set('x-auth', testUsers[2].tokens[0].token)
+        .expect(200);
 
+        let productFromDB = await Product.findOne({sku: testProducts[1].sku});
+        expect(productFromDB.inventory_count).toBe(0);
+    });
+
+    it('should delete the cart field for a user but keep the cart collection', async () => {
+        let response = await request(app).post(`/api/v2/cart/checkout`)
+        .set('x-auth', testUsers[2].tokens[0].token)
+        .expect(200);
+
+        let userFromDB = await User.findById(testUsers[2]._id);
+        expect(userFromDB.cart).toBe(null);
+
+        let cartFromDB = await Cart.findById(testCarts[0]._id);
+        expect(cartFromDB).toBeTruthy();
+    });
+
+    it('should return 400 if there is a higher quantity of a product in your cart than in inventory', async () => {
+        let response = await request(app).post(`/api/v2/cart/checkout`)
+        .set('x-auth', testUsers[4].tokens[0].token)
+        .expect(400);
+    });
+
+    it('should return 400 if a cart has not been made', async () => {
+        let response = await request(app).post(`/api/v2/cart/checkout`)
+        .set('x-auth', testUsers[0].tokens[0].token)
+        .expect(400);
+    });
+
+    it('should return 400 if there are no products in the cart', async () => {
+        let response = await request(app).post(`/api/v2/cart/checkout`)
+        .set('x-auth', testUsers[3].tokens[0].token)
+        .expect(400);
+    });
+
+    it('should return 401 if user is not logged in', async () => {
+        let response = await request(app).post(`/api/v2/cart/checkout`).expect(401);
+    });
 });
 
 describe('GET /api/v2/products', () => {

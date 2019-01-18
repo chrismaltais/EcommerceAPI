@@ -118,7 +118,7 @@ module.exports = (controller) => {
         }
 
         let total = await user.purchaseCart(req.user.cart);
-        let test = await user.removeCart(req.user);
+        await user.removeCart(req.user);
 
         res.status(200).send({message: `Cart purchased successfully! Total: $${total} CAD`});
     });
