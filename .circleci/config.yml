@@ -12,6 +12,8 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - codecov/upload:
+          file: /coverage
       - checkout # grab from repo
       - run: npm install
       - run: npm test
