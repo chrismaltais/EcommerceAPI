@@ -127,10 +127,10 @@ module.exports = (controller) => {
         let sku = req.params.sku;
         let quantity = req.params.quantity;
         if (isNaN(sku) || sku < 0) {
-            res.status(400).send({error: `Unable to change SKU: ${sku} to ${quantity} units in your cart. SKU must be a positive number.`})
+            return res.status(400).send({error: `Unable to change SKU: ${sku} to ${quantity} units in your cart. SKU must be a positive number.`})
         }
         if (isNaN(quantity) || quantity < 0) {
-            res.status(400).send({error: `Unable to change SKU: ${sku} to ${quantity} units in your cart. Quantity must be a positive number.`})
+            return res.status(400).send({error: `Unable to change SKU: ${sku} to ${quantity} units in your cart. Quantity must be a positive number.`})
         }
 
         let isProduct = await product.checkIfIsProduct(sku);
