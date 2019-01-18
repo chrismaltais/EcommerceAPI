@@ -7,7 +7,7 @@
     "seed": "node server/seed/product.seed.js",
     "local-test": "export ENV=test || SET \"NODE_ENV=test\" && jest --detectOpenHandles --watch",
     "start": "node server/server.js",
-    "test": "export ENV=test || SET \"NODE_ENV=test\" && jest && codecov",
+    "test": "export ENV=test || SET \"NODE_ENV=test\" && jest && codecov -t c31e61b8-7ab0-4528-92a7-4ec3ba82b81f",
     "test:coverage": "npm test -- --coverage && jest-coverage-badges"
   },
   "repository": {
