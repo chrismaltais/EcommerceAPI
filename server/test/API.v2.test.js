@@ -144,7 +144,17 @@ describe('PUT /api/v2/products/:sku', () => {
 });
 
 describe('PUT /api/v2/cart/:sku/:quantity', () => {
+    it('should return 400 if SKU is NaN', async () => {
 
+    });
+
+    it('should return 400 if quantity is NaN', async () => {
+
+    });
+
+    it('should return 401 if user if not logged in', async () => {
+
+    });
 });
 
 describe('POST /api/v2/cart/checkout', () => {
