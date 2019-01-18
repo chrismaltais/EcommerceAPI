@@ -3,6 +3,7 @@ const request = require('supertest');
 const {app} = require('./../server');
 const {Product} = require('./../models/products');
 const {User} = require('./../models/users')
+const {Cart} = require('./../models/carts')
 const {testProducts, testUsers, testCarts} = require('./seed/seed');
 
 describe('POST /api/v2/login', () => {
@@ -73,7 +74,7 @@ describe('POST /api/v2/cart', () => {
 describe('GET /api/v2/cart', () => {
     it('should return an empty cart with no products if cart not previously created', async () => {
         let response = await request(app).get('/api/v2/cart')
-        .set('x-auth', testUsers[0].tokens[0].token) // Set the header!
+        .set('x-auth', testUsers[0].tokens[0].token)
         .expect(200)
         
         expect(response.body).toBeTruthy(); // Empty Array
@@ -86,6 +87,69 @@ describe('GET /api/v2/cart', () => {
         let response = await request(app).get('/api/v2/cart').expect(401)
     });
 })
+
+describe('PUT /api/v2/products/:sku', () => {
+    it('should add product to cart if cart exists', async () => {
+        let sku = testProducts[0].sku
+        let response = await request(app).put(`/api/v2/products/${sku}`)
+        .set('x-auth', testUsers[2].tokens[0].token)
+        .expect(200);
+
+        let userFromDB = await User.findById(testUsers[2]._id);
+        let cartFromDB = await Cart.findById(userFromDB.cart);
+
+        expect(cartFromDB.products[0].sku).toBe(sku);
+    });
+
+    it('should create cart, and add product to cart if cart does not exist', async () => {
+        let sku = testProducts[0].sku
+        let response = await request(app).put(`/api/v2/products/${sku}`)
+        .set('x-auth', testUsers[0].tokens[0].token)
+        .expect(200);
+
+        let userFromDB = await User.findById(testUsers[0]._id);
+
+        expect(userFromDB.cart).toBeTruthy();
+        
+        let cartFromDB = await Cart.findById(userFromDB.cart);
+
+        expect(cartFromDB.products[0].sku).toBe(sku);
+    });
+
+    it('should return 401 if user is not logged in', async () => {
+        let sku = testProducts[0].sku;
+        let response = await request(app).put(`/api/v2/products/${sku}`).expect(401);
+    });
+
+    it('should return 400 if SKU is NaN', async () => {
+        let sku = 'memes';
+        let response = await request(app).put(`/api/v2/products/${sku}`)
+        .set('x-auth', testUsers[0].tokens[0].token)
+        .expect(400);
+    });
+
+    it('should return 404 if the SKU has no remaining inventory', async () => {
+        let sku = testProducts[2].sku
+        let response = await request(app).put(`/api/v2/products/${sku}`)
+        .set('x-auth', testUsers[0].tokens[0].token)
+        .expect(404);
+    });
+
+    it('should return 404 if the SKU does not exist', async () => {
+        let sku = 100
+        let response = await request(app).put(`/api/v2/products/${sku}`)
+        .set('x-auth', testUsers[0].tokens[0].token)
+        .expect(404);
+    });
+});
+
+describe('PUT /api/v2/cart/:sku/:quantity', () => {
+
+});
+
+describe('POST /api/v2/cart/checkout', () => {
+
+});
 
 describe('GET /api/v2/products', () => {
     it('should get all products', async () => {
