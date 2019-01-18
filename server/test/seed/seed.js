@@ -5,7 +5,10 @@ const {Product} = require('./../../models/products');
 const {User} = require('./../../models/users');
 const {Cart} = require('./../../models/carts');
 
-const testUserID = new ObjectId();
+const testUserOneID = new ObjectId();
+const testUserThreeID = new ObjectId();
+
+const testCartOneID = new ObjectId();
 
 let testProducts = [{
     title: 'iPhone 11',
@@ -25,16 +28,29 @@ let testProducts = [{
 }];
 
 let testUsers = [{
-    _id: testUserID,
+    _id: testUserOneID,
     email: 'chris.maltais@shopify.ca',
     password: 'IdLikeToWorkHere',
     tokens: [{
         access: 'auth',
-        token: jwt.sign({_id: testUserID, access: 'auth'}, 'JWT_SECRET').toString()
+        token: jwt.sign({_id: testUserOneID, access: 'auth'}, 'JWT_SECRET').toString()
     }]
 },{
     email: 'tobias.lutke@shopify.ca',
     password: 'CEOManz'
+}, {
+    _id: testUserThreeID,
+    email: 'contact@chrismaltais.com',
+    password: 'CheckOutMySite',
+    tokens: [{
+        access: 'auth',
+        token: jwt.sign({_id: testUserThreeID, access: 'auth'}, 'JWT_SECRET').toString()
+    }],
+    cart: testCartOneID
+}];
+
+let testCarts = [{
+    _id: testCartOneID
 }]
 
 const populateDB = async () => {
@@ -46,10 +62,13 @@ const populateDB = async () => {
     await new Product(testProducts[2]).save();
     await new User(testUsers[0]).save();
     await new User(testUsers[1]).save();
+    await new User(testUsers[2]).save();
+    await new Cart(testCarts[0]).save();
 } 
 
 module.exports = {
     testProducts,
     testUsers,
+    testCarts,
     populateDB
 }

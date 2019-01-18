@@ -3,7 +3,7 @@ const request = require('supertest');
 const {app} = require('./../server');
 const {Product} = require('./../models/products');
 const {User} = require('./../models/users')
-const {testProducts, testUsers} = require('./seed/seed');
+const {testProducts, testUsers, testCarts} = require('./seed/seed');
 
 describe('POST /api/v2/login', () => {
     it('should login user and return auth token', async () => {
@@ -51,11 +51,22 @@ describe('DELETE /api/v2/logout', () => {
 
 describe('POST /api/v2/cart', () => {
     it('should create a new cart if one does not already exist', async () => {
-        
+        let response = await request(app).post('/api/v2/cart')
+        .set('x-auth', testUsers[0].tokens[0].token) // Set the header!
+        .expect(200)
+
+        let userFromDB = await User.findById(testUsers[0]._id);
+        expect()
     });
 
     it('should return 400 if a cart already exists', async () => {
+        let response = await request(app).post('/api/v2/cart')
+        .set('x-auth', testUsers[2].tokens[0].token) // Set the header!
+        .expect(400)
+    });
 
+    it('should return 401 if user is not logged in', async() => {
+        let response = await request(app).post('/api/v2/cart').expect(401)
     });
 })
 
