@@ -1,0 +1,304 @@
+{
+	"info": {
+		"_postman_id": "978033c7-f0fe-420e-bf96-e8dd7fd2b672",
+		"name": "Shopify Summer 2019 Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Authentication",
+			"item": [
+				{
+					"name": "/api/v2/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5587dd39-ab7c-489c-8787-6957fe7c7fbc",
+								"exec": [
+									"var token = postman.getResponseHeader('x-auth');",
+									"postman.setEnvironmentVariable('x-auth', token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chris.maltais@shopify.ca\",\n    \"password\": \"IdLikeToWorkHere\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"login"
+							]
+						},
+						"description": "Login to the online marketplace (required to create a cart).\n\n### Example Response\n```\n{\n\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzQ0MTQ0ODU0Mjc0ZjAwMmJjMDdhZTciLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTQ4MDE0MDM2fQ.YVIhbmMZyXBByR6yoNF2Kkqx3LZrT1hI6rk3mR-5OR0\"\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v2/logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"logout"
+							]
+						},
+						"description": "Logout of the online marketplace.\n\n### Example Response\n```\n{\n    \"message\": \"Successfully logged out.\"\n}\n```"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for signing a user in and out of the application."
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "/api/v2/products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"products"
+							]
+						},
+						"description": "View all products in the store.\n\n\n### Optional Parameters\n\nParameter | Description | Examples\n--------- | ----------- | -------------\nstocked   | Filter by product inventory | `?stocked=true`, `?stocked=false`\n\n### Example Response\n```\n[\n    {\n        \"title\": \"iPhone 11\",\n        \"price\": 1000,\n        \"sku\": 1,\n        \"inventory_count\": 2\n    },\n    {\n        \"title\": \"iPad 6\",\n        \"price\": 600,\n        \"sku\": 2,\n        \"inventory_count\": 2\n    },\n    {\n        \"title\": \"iLaptop\",\n        \"price\": 600,\n        \"sku\": 3,\n        \"inventory_count\": 0\n    }\n]\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v2/products/:sku",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/products/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"products",
+								"1"
+							]
+						},
+						"description": "View an individual product by SKU.\n\n### Example Response\n```\n{\n    \"title\": \"iPhone 11\",\n    \"price\": 1000,\n    \"sku\": 1,\n    \"inventory_count\": 2\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v2/products/:sku",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/products/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"products",
+								"1"
+							]
+						},
+						"description": "Add an individual product to the cart by SKU.\n\n### Example Response\n```\n{\n    \"message\": \"Added SKU: 1 to cart! View your cart at /api/v2/cart\"\n}\n```"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for browsing and adding products to your cart."
+		},
+		{
+			"name": "Carts",
+			"item": [
+				{
+					"name": "/api/v2/cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/cart",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"cart"
+							]
+						},
+						"description": "Create a cart to add products to.\n\n### Example Response\n```\n{\n    \"total\": 0,\n    \"products\": []\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v2/cart",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/cart",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"cart"
+							]
+						},
+						"description": "View all products in your cart and the total price of the cart.\n\n### Example Response \n```\n{\n    \"total\": 1000,\n    \"products\": [\n        {\n            \"_id\": \"5c44d7127d20f70010cdbf3e\",\n            \"title\": \"iPhone 11\",\n            \"price\": 1000,\n            \"sku\": 1,\n            \"quantity\": 1\n        }\n    ]\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v2/cart/:sku/:quantity",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth",
+								"type": "text",
+								"value": "{{x-auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/cart/2/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"cart",
+								"2",
+								"2"
+							]
+						},
+						"description": "Edit the quantity of an individual SKU in the cart.\n\n### Example Response\n```\n{\n    \"total\": 2200,\n    \"products\": [\n        {\n            \"_id\": \"5c44d8bf7d20f70010cdbf43\",\n            \"title\": \"iPad 6\",\n            \"price\": 600,\n            \"sku\": 2,\n            \"quantity\": 2\n        },\n        {\n            \"_id\": \"5c44d8d37d20f70010cdbf44\",\n            \"title\": \"iPhone 11\",\n            \"price\": 1000,\n            \"sku\": 1,\n            \"quantity\": 1\n        }\n    ]\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v2/cart/checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v2/cart/checkout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"cart",
+								"checkout"
+							]
+						},
+						"description": "Purchase the cart.\n\n### Example Response\n```\n{\n    \"message\": \"Cart purchased successfully! Total: $2200 CAD\"\n}\n```"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for creating, managing, and checking out your cart."
+		}
+	]
+}
