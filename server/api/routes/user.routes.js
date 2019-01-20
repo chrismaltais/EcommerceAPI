@@ -68,7 +68,7 @@ module.exports = (controller) => {
                 return res.status(404).send({message: `Unable to add SKU: ${sku} to cart. Product does not exist.`})
             }
             await user.addToCart(req.user, sku);
-            res.status(200).send(`Added SKU: ${sku} to cart! View your cart at /api/v2/cart`);
+            res.status(200).send({message: `Added SKU: ${sku} to cart! View your cart at /api/v2/cart`});
         } catch (e) {
             res.status(400).send(e);
         }

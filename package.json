@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "seed": "node server/seed/product.seed.js",
-    "start": "node server/server.js",
-    "test": "export ENV=test || SET \"NODE_ENV=test\" && jest ",
+    "seed:local": "export ENV=local || SET \"NODE_ENV=local\" && node server/seed/product.seed.js",
+    "start": "export ENV=local || SET \"NODE_ENV=local\" && node server/server.js",
+    "start:docker": "node server/server.js",
+    "test": "export ENV=test || SET \"NODE_ENV=test\" && jest",
     "test:watch": "export ENV=test || SET \"NODE_ENV=test\" && jest --watch",
     "test:coverage": "npm test && codecov -t c31e61b8-7ab0-4528-92a7-4ec3ba82b81f"
   },

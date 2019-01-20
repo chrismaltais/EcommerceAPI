@@ -1,0 +1,278 @@
+{
+	"info": {
+		"_postman_id": "4374c7e0-2971-4631-b2a0-a3f5d4c010ab",
+		"name": "Shopify Summer 2019 Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST /api/v2/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5587dd39-ab7c-489c-8787-6957fe7c7fbc",
+						"exec": [
+							"var token = postman.getResponseHeader('x-auth');",
+							"postman.setEnvironmentVariable('x-auth', token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"chris.maltais@shopify.ca\",\n    \"password\": \"IdLikeToWorkHere\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"login"
+					]
+				},
+				"description": "Endpoint to login to online marketplace."
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v2/products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/products",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v2/products/:sku",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/products/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/v2/cart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth",
+						"value": "{{x-auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/cart",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v2/cart",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth",
+						"value": "{{x-auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/cart",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /api/v2/products/:sku",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-auth",
+						"value": "{{x-auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/products/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /api/v2/:sku/:quantity",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-auth",
+						"value": "{{x-auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/cart/3/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"cart",
+						"3",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/v2/cart/checkout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth",
+						"value": "{{x-auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/cart/checkout",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"cart",
+						"checkout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/v2/logout",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth",
+						"value": "{{x-auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/logout",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

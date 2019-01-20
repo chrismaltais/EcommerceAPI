@@ -5,7 +5,7 @@ let authenticate = async (req, res, next) => {
     let token = req.header('x-auth');
     let specificUser = await User.findByToken(token);
     if (!specificUser) {
-        return res.status(401).send();
+        return res.status(401).send({error: 'Please log in to use this route.'});
     }
     req.user = specificUser;
     req.token = token;
