@@ -144,6 +144,20 @@ describe('PUT /api/v2/products/:sku', () => {
 });
 
 describe('PUT /api/v2/cart/:sku/:quantity', () => {
+    it('should edit the product associated with the sku in the cart to the quantity provided', async () => {
+        let sku = testProducts[0].sku;
+        let quantity = 2;
+        let response = await request(app).put(`/api/v2/cart/${sku}/${quantity}`)
+        .set('x-auth', testUsers[3].tokens[0].token)
+        .expect(200);
+
+        let userFromDB = await User.findById(testUsers[3]._id);
+        let cartFromDB = await Cart.findById(userFromDB.cart);
+
+        expect(cartFromDB.products[0].sku).toBe(sku);
+        expect(cartFromDB.products[0].quantity).toBe(quantity);
+    });
+
     it('should return 400 if SKU is NaN', async () => {
         let sku = 'hello';
         let response = await request(app).put(`/api/v2/cart/${sku}/3`)
@@ -152,12 +166,42 @@ describe('PUT /api/v2/cart/:sku/:quantity', () => {
     });
 
     it('should return 400 if quantity is NaN', async () => {
-
+        let sku = testProducts[0].sku;
+        let quantity = 'a lot';
+        let response = await request(app).put(`/api/v2/cart/${sku}/${quantity}`)
+        .set('x-auth', testUsers[3].tokens[0].token)
+        .expect(400);
     });
 
-    it('should return 401 if user if not logged in', async () => {
-
+    it('should return 400 if the SKU is not associated with a product', async () => {
+        let sku = 10000000;
+        let quantity = 3;
+        let response = await request(app).put(`/api/v2/cart/${sku}/${quantity}`)
+        .set('x-auth', testUsers[2].tokens[0].token)
+        .expect(404);
     });
+
+    it('should return 400 if SKU is a negative number', async () => {
+        let sku = -1;
+        let quantity = 3;
+        let response = await request(app).put(`/api/v2/cart/${sku}/${quantity}`)
+        .set('x-auth', testUsers[2].tokens[0].token)
+        .expect(400);
+    });
+
+    it('should return 400 if quantity is a negative number', async () => {
+        let sku = testProducts[0].sku;
+        let quantity = -3;
+        let response = await request(app).put(`/api/v2/cart/${sku}/${quantity}`)
+        .set('x-auth', testUsers[2].tokens[0].token)
+        .expect(400);
+    });
+
+    it('should return 401 if user is not logged in', async () => {
+        let sku = testProducts[0].sku;
+        let response = await request(app).put(`/api/v2/cart/${sku}/3`).expect(401);
+    });
+   
 });
 
 describe('POST /api/v2/cart/checkout', () => {

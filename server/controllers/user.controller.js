@@ -62,7 +62,6 @@ async function editCart(user, cartId, sku, quantity) {
 
 async function calculateCartTotal(cartId) {
     let products = await getCartProducts(cartId);
-    console.log('Cart products: ', products);
     total = 0;
     for (let i = 0; i < products.length; i++) {
         total = total + products[i].quantity * products[i].price;
