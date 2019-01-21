@@ -28,6 +28,6 @@ There are 2 versions of the API available for use: Version 1 and Version 2.
 3. Product inventory shouldn't reduce until after a cart has been completed.
 
 ### Endpoints
-See [documentation](https://documenter.getpostman.com/view/3302275/RzteTCYc)
+See [documentation](https://documenter.getpostman.com/view/3302275/RzteTYBK)
 
 
