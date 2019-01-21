@@ -1,6 +1,7 @@
 # Shopify Developer Challenge
 [![CircleCI](https://circleci.com/gh/chrismaltais/EcommerceAPI.svg?style=svg)](https://circleci.com/gh/chrismaltais/EcommerceAPI)
 [![codecov](https://codecov.io/gh/chrismaltais/ShopifyInternChallenge2019/branch/master/graph/badge.svg)](https://codecov.io/gh/chrismaltais/ShopifyInternChallenge2019)
+[![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest)
 
 This repository is a solution to Shopify’s [Developer Challenge](https://docs.google.com/document/d/1J49NAOIoWYOumaoQCKopPfudWI_jsQWVKlXmw1f1r-4/edit): Building the the barebones backend for an e-commerce store.
 
