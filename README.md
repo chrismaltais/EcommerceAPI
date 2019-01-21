@@ -35,7 +35,7 @@ Congratulations! The server is up and the database is seeded.
 
 You can begin browsing at `localhost:3000/api/v2/products`!
 
-See the [documentation](https://documenter.getpostman.com/view/3302275/RzteTCYc) for resource information.
+See the [documentation](https://documenter.getpostman.com/view/3302275/RzteTYBK) for resource information.
 
 **Stopping the server**
 
@@ -64,7 +64,7 @@ Learn more about:
 - [Testing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/TESTING.md)
 - [Contributing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/CONTRIBUTING.md)
 - [Versioning](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/VERSIONING.md)
-- [API Endpoints](https://documenter.getpostman.com/view/3302275/RzteTCYc)
+- [API Endpoints](https://documenter.getpostman.com/view/3302275/RzteTYBK)
 
 # Troubleshooting
 If any problems arise, for the sake of this challenge most will be fixed by simply reseeding the database
