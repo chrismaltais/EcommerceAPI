@@ -61,10 +61,11 @@ See the [documentation](https://documenter.getpostman.com/view/3302275/RzteTYBK)
   
 # Documentation
 Learn more about:
-- [Testing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/TESTING.md)
-- [Contributing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/CONTRIBUTING.md)
-- [Versioning](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/VERSIONING.md)
+- [Authentication](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/AUTHENTICATION.md)
 - [API Endpoints](https://documenter.getpostman.com/view/3302275/RzteTYBK)
+- [Testing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/TESTING.md)
+- [Versioning](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/VERSIONING.md)
+- [Contributing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/CONTRIBUTING.md)
 
 # Troubleshooting
 If any problems arise, for the sake of this challenge most will be fixed by simply reseeding the database
