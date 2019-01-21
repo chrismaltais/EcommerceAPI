@@ -8,12 +8,11 @@ This solution uses NodeJS and Express to create a RESTful API.
 
 # Requirements
 
-- Node (version 9.10.1)
+- Docker (version 18.09.1) **or** 
+- Node (version 9.10.1) **and** MongoDB (version 4.0.0)
 
 ## Optional
 
-- Docker (version 18.09.1)
-- MongoDB (version 4.0.0)
 - Postman (version 6.7.1)
 
 # Usage
@@ -61,5 +60,6 @@ See the [documentation](https://documenter.getpostman.com/view/3302275/RzteTCYc)
   
 # Documentation
 Learn more about:
-- Testing
+- [Testing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/TESTING.md)
+- [Contributing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/CONTRIBUTING.md)
 - [API Endpoints](https://documenter.getpostman.com/view/3302275/RzteTCYc)
