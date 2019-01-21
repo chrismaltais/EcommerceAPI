@@ -62,4 +62,5 @@ See the [documentation](https://documenter.getpostman.com/view/3302275/RzteTCYc)
 Learn more about:
 - [Testing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/TESTING.md)
 - [Contributing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/CONTRIBUTING.md)
+- [Versioning] (https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/VERSIONING.md)
 - [API Endpoints](https://documenter.getpostman.com/view/3302275/RzteTCYc)
