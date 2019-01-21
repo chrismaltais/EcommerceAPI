@@ -62,5 +62,11 @@ See the [documentation](https://documenter.getpostman.com/view/3302275/RzteTCYc)
 Learn more about:
 - [Testing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/TESTING.md)
 - [Contributing](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/CONTRIBUTING.md)
-- [Versioning] (https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/VERSIONING.md)
+- [Versioning](https://github.com/chrismaltais/EcommerceAPI/blob/master/docs/VERSIONING.md)
 - [API Endpoints](https://documenter.getpostman.com/view/3302275/RzteTCYc)
+
+# Troubleshooting
+If any problems arise, for the sake of this challenge most will be fixed by simply reseeding the database
+> `docker exec -it webAPI npm run seed` (if running on docker) **OR** `npm run seed:local` (if running locally)
+
+Contact: contact@chrismaltais.com
