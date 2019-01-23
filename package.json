@@ -10,18 +10,18 @@
     "start:docker": "node server/server.js",
     "test": "export ENV=test || SET \"NODE_ENV=test\" && jest",
     "test:watch": "export ENV=test || SET \"NODE_ENV=test\" && jest --watch",
-    "test:coverage": "npm test && codecov -t c31e61b8-7ab0-4528-92a7-4ec3ba82b81f"
+    "test:coverage": "export ENV=test || SET \"NODE_ENV=test\" && jest --coverage && codecov -t 8891128f-a3cd-456d-bd2f-473b20224748"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chrismaltais/ShopifyInternChallenge2019.git"
+    "url": "git+https://github.com/chrismaltais/EcommerceAPI.git"
   },
   "author": "Chris Maltais (chris.maltais@queensu.ca)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chrismaltais/ShopifyInternChallenge2019/issues"
+    "url": "https://github.com/chrismaltais/EcommerceAPI/issues"
   },
-  "homepage": "https://github.com/chrismaltais/ShopifyInternChallenge2019#readme",
+  "homepage": "https://github.com/chrismaltais/EcommerceAPI#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
